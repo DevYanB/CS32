@@ -1,0 +1,37 @@
+In file included from /Users/devyanbiswas/Desktop/CS32/Project2/MapLinkedLists/MapLinkedLists/main.cpp:2:
+/Users/devyanbiswas/Desktop/CS32/Project2/MapLinkedLists/MapLinkedLists/Map.h:15:19: warning: alias declarations are a C++11 extension [-Wc++11-extensions]
+using ValueType = double;
+                  ^
+/Users/devyanbiswas/Desktop/CS32/Project2/MapLinkedLists/MapLinkedLists/Map.h:16:17: warning: alias declarations are a C++11 extension [-Wc++11-extensions]
+using KeyType = std::string;
+                ^
+2 warnings generated.
+Undefined symbols for architecture x86_64:
+  "combine(Map const&, Map const&, Map&)", referenced from:
+      _main in main-0e05d7.o
+  "subtract(Map const&, Map const&, Map&)", referenced from:
+      _main in main-0e05d7.o
+  "Map::swap(Map&)", referenced from:
+      _main in main-0e05d7.o
+  "Map::erase(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&)", referenced from:
+      _main in main-0e05d7.o
+  "Map::insert(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&, double const&)", referenced from:
+      _main in main-0e05d7.o
+  "Map::update(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&, double const&)", referenced from:
+      _main in main-0e05d7.o
+  "Map::Map()", referenced from:
+      _main in main-0e05d7.o
+  "Map::~Map()", referenced from:
+      _main in main-0e05d7.o
+  "Map::get(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&, double&) const", referenced from:
+      _main in main-0e05d7.o
+  "Map::get(int, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >&, double&) const", referenced from:
+      _main in main-0e05d7.o
+  "Map::size() const", referenced from:
+      _main in main-0e05d7.o
+  "Map::empty() const", referenced from:
+      _main in main-0e05d7.o
+  "Map::contains(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&) const", referenced from:
+      _main in main-0e05d7.o
+ld: symbol(s) not found for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)

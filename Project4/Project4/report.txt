@@ -1,0 +1,36 @@
+MyHash:
+MyHash contains a few integers and doubles to keep track of the max load, number of items, and number of buckets. It also has a HashNode type, which has a key, a value, and a pointer to the next element(since every bucket contains a linked list). Lastly, there is a dynamnic array of HashNode pointers, which is the basis of our Hash object.
+Constructor:
+	The constructor initializes all the basic data, taking in the passed load factor as the max load of the hash, setting buckets to 100 and items to 0, and makign all the elements in the hash point to nullptr. This is in O(n) time since it is just going through the n elements of the array.
+Destructor:
+	The destructor traverses the nodes in each bucket, deleting them through, and then after going through them all deleting the array as well. This is also in O(n) time.
+reset:
+	Essentially the reset function does destructor then constructor, while resetting all the private variables except load. This runs in O(2n) = O(n) time.
+associate:
+	Associate takes in a key and value. It hashes the key to point to a specific index in the dynamnic array and subsequently creates then inserts the hash node('s pointer) into the bucket. If there is already a Hash Node in that bucket, meaning it hashes to the same bucket, it will add to the top of the linked list within the bucket. If the addition causes the loadFactor to exceed the max load, it will create a temp hash with double the size, re-hash each key and save to the corresponding location in the new hash, then settign the new hash to the private and deleting the temporary. Since you're either accessing a bucket with nullptr, or addinf to the top of a linked list, the normal time os O(1). If it is the pathological case, it runs in O(n).
+find:
+	Hashes the passed key to get the index at which the value may be found, then checks each key in the linked list for the specific key passed and returns the value associated with that key. Since you already have the key, it runs in O(1) time gneerally, and O(n) if there are n items in the linked list.
+getNumItems returns the items, and getLoadFactor simply returns the items/buckets
+
+
+Tokenizer:
+Tokenizer's constructor saves characters to a character vector that will be used in the next function to determine what to keep and what to ignore. Since you're traversing the string and adding to the character vector, this takes O(n) time, for a string of length n.
+tokenize:
+	tokenize traverses through the string passed to it, checking for and ignoring the characters that are within the character vector of Tokenizer's private. The algorithm adds to a temp string variable until it reaches one of the characters specified, in which case it pushes the value onto the vector created within the function, skips the character, resets the temp string, and continues. I had to implement specific checks to prevent any empty strings from being inserted into the vector when the temp string was cleared. This runs in O(SP) time, since you have to check through each character ina word and then compare with each character in vector.
+
+
+WordList:
+Wordlist implements a MyHash object for a string key with a vector value. This allows for the tracking of objects with the same pattern. 
+There are 3 main functions in WordList itself, and one private function that I implemented.
+ConvertPatter:
+	This function takes in a string and outputs a pattern string, which is used to hash a value into the private MyHash within this class. It is also used to access the value in the MyHash object where strings of the same pattern are found. It simply traverses the string passed to it, updating the pattern string with a new character for every unique character it reaches in the passed string. 
+loadWordList: 
+	The function first loads the file. If it cannot, it will return false. This function reads in every single line, assuming no individual words are on each new line, while ignoring words with incorrect characters in them. When adding the words to the MyHash object in WordList, it takes in the key and gets the pattern for that word. Then, it gets the index using the hash function, and checks that corresponding bucket in the MyHash object. If there is no value, ie, this is the first occurence of such a pattern, it calls the associate function and adds it to the MyHash object. Otherwise, it uses find on the key to get a pointer to value, in this case the vector of all strings with the same pattern, and pushes the new string onto the vector. If this is all executed correctly, the function returns true. This runs in O(n) time, assumign string traversal as O(1) time as stated in spec, for W unique words.
+contains:
+	This function gets the vector associated with the pattern of the word passed using convertpattern, and then searched through the vector to find the specific word, returning true if true. This is O(1), since you pass in the key which gives you the exact index.
+findCandidates:
+	First, using convertpattern, it gets the vector associated with the pattern of the cipherWord, storing it in a local. Then, iterating through the vector and going through the string while keeping track of the currentTranslation values where there are characters, removes those that do not match with the currentTranslation from the local, which it then returns. Assuming strign traversal as O(1) as in spec, this runs at O(n), with n being the number of matching words, sicne oyu have to traverse through the vector to remove the words that do not match the current translation.
+
+Decoder: DID NOT FINISH
+
+Translator: DID NOT FINISH

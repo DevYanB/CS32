@@ -1,0 +1,63 @@
+[devyan@lnxsrv06 ~/Desktop/pr3]$ ./p3sanity
+About to call init for the StudentWorld
+About to call move for the StudentWorld with simulated up arrow key press
+About to call cleanup for the StudentWorld
+About to destroy StudentWorld object
+=================================================================
+==30533==ERROR: AddressSanitizer: heap-use-after-free on address 0x607000000090 at pc 0x0000004177c2 bp 0x7ffd2604f4a0 sp 0x7ffd2604f498
+READ of size 8 at 0x607000000090 thread T0
+    #0 0x4177c1 in StudentWorld::cleanUp() (/w/home.17/cs/ugrad/devyan/Desktop/pr3/p3sanity+0x4177c1)
+    #1 0x41568a in StudentWorld::~StudentWorld() (/w/home.17/cs/ugrad/devyan/Desktop/pr3/p3sanity+0x41568a)
+    #2 0x4157e7 in StudentWorld::~StudentWorld() (/w/home.17/cs/ugrad/devyan/Desktop/pr3/p3sanity+0x4157e7)
+    #3 0x40729e in main (/w/home.17/cs/ugrad/devyan/Desktop/pr3/p3sanity+0x40729e)
+    #4 0x7fc60530fc04 in __libc_start_main (/lib64/libc.so.6+0x21c04)
+    #5 0x402ff8  (/w/home.17/cs/ugrad/devyan/Desktop/pr3/p3sanity+0x402ff8)
+
+0x607000000090 is located 0 bytes inside of 80-byte region [0x607000000090,0x6070000000e0)
+freed by thread T0 here:
+    #0 0x7fc606d45398 in operator delete(void*, unsigned long) ../../../../gcc-7.3.0/libsanitizer/asan/asan_new_delete.cc:140
+    #1 0x4150fe in Star::~Star() (/w/home.17/cs/ugrad/devyan/Desktop/pr3/p3sanity+0x4150fe)
+    #2 0x4178cd in StudentWorld::cleanUp() (/w/home.17/cs/ugrad/devyan/Desktop/pr3/p3sanity+0x4178cd)
+    #3 0x406d14 in main (/w/home.17/cs/ugrad/devyan/Desktop/pr3/p3sanity+0x406d14)
+    #4 0x7fc60530fc04 in __libc_start_main (/lib64/libc.so.6+0x21c04)
+
+previously allocated by thread T0 here:
+    #0 0x7fc606d44010 in operator new(unsigned long) ../../../../gcc-7.3.0/libsanitizer/asan/asan_new_delete.cc:80
+    #1 0x415c1a in StudentWorld::init() (/w/home.17/cs/ugrad/devyan/Desktop/pr3/p3sanity+0x415c1a)
+    #2 0x403a48 in main (/w/home.17/cs/ugrad/devyan/Desktop/pr3/p3sanity+0x403a48)
+    #3 0x7fc60530fc04 in __libc_start_main (/lib64/libc.so.6+0x21c04)
+
+SUMMARY: AddressSanitizer: heap-use-after-free (/w/home.17/cs/ugrad/devyan/Desktop/pr3/p3sanity+0x4177c1) in StudentWorld::cleanUp()
+Shadow bytes around the buggy address:
+  0x0c0e7fff7fc0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c0e7fff7fd0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c0e7fff7fe0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c0e7fff7ff0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c0e7fff8000: fa fa fa fa 00 00 00 00 00 00 00 00 02 fa fa fa
+=>0x0c0e7fff8010: fa fa[fd]fd fd fd fd fd fd fd fd fd fa fa fa fa
+  0x0c0e7fff8020: fd fd fd fd fd fd fd fd fd fd fa fa fa fa fd fd
+  0x0c0e7fff8030: fd fd fd fd fd fd fd fd fa fa fa fa fd fd fd fd
+  0x0c0e7fff8040: fd fd fd fd fd fd fa fa fa fa fd fd fd fd fd fd
+  0x0c0e7fff8050: fd fd fd fd fa fa fa fa fd fd fd fd fd fd fd fd
+  0x0c0e7fff8060: fd fd fa fa fa fa fd fd fd fd fd fd fd fd fd fd
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==30533==ABORTING
+[devyan@lnxsrv06 ~/Desktop/pr3]$ 

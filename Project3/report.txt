@@ -1,0 +1,164 @@
+Devyan Biswas
+804988161
+
+NachenBlaster Report
+
+1.Public Member Functions Description
+
+Within StudentWorld.h:
+virtual void collCab(Actor* cab);
+Does the check to determine wether a cabbage has collided with an alien ship, setting the life state of the cabbage to false, meaning it will delete in the next iteration of move(), and having the alien hit suffer damage.
+virtual void collTorpedo(Actor* c);
+Does the check to determine wether a torpedo has collided with an alien ship, setting the life state of the cabbage to false, meaning it will delete in the next iteration of move(), and having the alien hit suffer damage.
+virtual int init();
+Initializes all the member data, populates the screen with the NachenBlaster and 30 randomly placed star objects, pushing them to the list result, which holds all other objects on screen.
+virtual void cleanUp();
+This deletes every object in the list result and the NachenBlaster.
+virtual int move();
+Is called every tick, this is what controls all action on the scree. For every element on screen, it checks if it is alive or dead. If alive, it calls that object’s doSomething() function. If it is dead, it deletes the object and removes it from the list result. Also, sets up and calculated the display at the top of the screen.
+virtual void setDestroyedAlienCount();
+This increments the number of alien ships killed (a private member of StudentWorld).
+virtual unsigned long size()
+Returns the current size of the list result. To be used if needing size if doing specific increments within list result.
+virtual void addTo(Actor* act)
+Allows for adding (ie pushing) an item of type Actor* onto the list result. This was a very useful addition, as it allowed for items that had a pointer to a StudentWorld object to be able to create and push different objects to the list result within StudentWorld.
+virtual int getETicks()
+This returns the expTicks private member, which is updated whenever an explosion occurs, and is taken in and used within the explosion object to determine how long to keep expanding before setting its status to dead.
+virtual int getTicks()
+Returns the current number of ticks elapsed since the start of the round.
+
+
+virtual NachenBlaster* getPlayer()
+Returns a pointer to the player NachenBlaster, used for a separate Euclidean distance calculation and for other uses, like in Goodies.
+double eud(double x1, double y1, double x2, double y2);
+A separate, specific Euclidean distance calculator that is used within StudentWorld to calculate wether a cabbage object or torpedo has collided with an alien or a player(first two in this section).
+
+Within Actor.h:
+Actor:
+Actor(int ID, double x, double y, StudentWorld* students, int dir, double size, int depth)
+Constructor for Actor, calls GraphObject’s constructor within it, and sets the default alive status to true. No default values, as those will be implemented in other objects, since every object following is of a type Actor.
+virtual void doSomething() = 0;
+Every single object has a doSomething() function, so made it a pure virtual function.
+virtual void setAliveState(bool result)
+Allows for other child classes to set the private member of the boolean isAlive to true or false.
+virtual bool alive()
+Check if the object is alive or dead.
+virtual StudentWorld* instanceSW()
+Return the private member pointer to the StudentWorld object this particular object (that will inherit from Actor) is pointing to.
+double euclidean_dist(double x1, double y1, double x2, double y2)
+A separate, specific Euclidean distance calculator that is used within StudentWorld to calculate wether two objects of type Actor are colliding.
+virtual void torpedoDamage() 
+This is to allow for all objects that are damageable to experience -8 hit points when hit by a torpedo (this is implemented later, otherwise this is empty. This allows for us to override it later in damageable objects).
+virtual void sufferDamage()
+This is to allow for all objects that are damageable to experience -2 hit points when hit by a cabbage (this is implemented later, otherwise this is empty. This allows for us to override it later in damageable objects).
+virtual bool isDamageable()
+Default returns false, virtual so that is can be overridden for DamObj.
+
+
+
+
+
+
+DamObj: 
+DamObj(int ID, double x, double y, StudentWorld* s, int dir, double size, int depth,int hp, int cp)
+Initializes a damageable object using the Actor constructor and also setting hit points and cabbage energy points.
+virtual int getHpoints()
+Returns the current health of the object for child classes to be able to tell current health.
+virtual void setHpoints(int hpoints)
+Allows for changing health of the object from other objects.
+virtual int getCPoints()
+Returns the current cabbage energy of the object for child classes to be able to tell current cabbage energy.
+virtual void setEpoints(int epoints)
+Allows for changing health of the object from other objects.
+virtual bool isDamageable()
+Returns true.
+virtual void sufferDamage()
+See above, re-implemented for cabbage to call, takes - 2 health.
+virtual void torpedoDamage()
+See above, re-implemented for torpedo to call, takes -8 health.
+
+Alien:
+Alien(int ID, double x, double y, StudentWorld* s, int h, int p, int dir = 0, double size = 1.5, int depth = 1)
+Inherits from DamObj, takes in health and cabbage energy and sets them (however, cabbage energy is never used; this is an issue, but does not affect the run of the program) in addition to size, direction, and depth.
+virtual void setTravelSpeed(double s)
+Sets the movement speed of the alien.
+virtual double getTravelSpeed()
+Returns the travel speed of the alien.
+virtual void setFlightPlan(int plan)
+Allows to change the flight plan of the Alien. The flight plan is basically the length of its flight.
+virtual int flightPlan()
+Returns the flight length.
+virtual void setTravelDirec(string s)
+Sets the direction of travel for the Alien, wether Up and Left, Down and Left, of Left.
+virtual string travelDirection()
+Returns the string of the direction of travel.
+
+
+
+Smoregon:
+Smoregon(double x, double y, StudentWorld* s, int h , int p)
+Sets the position and pointer to the current Student World.
+doSomething()
+Controls the movement of the Smoregon. Checks if within 4 y of the nachenblaster, will have probability to charge if yes, and also random chance of firing turnip.. Also checks the death condition for collision between it and the Nachenblaster. Also has the probability for dropping one goodie, either torpedos or repair kit.
+
+Smallgon:
+Smallgon(double x, double y, StudentWorld* s, int h , int p)
+Sets the position and pointer to the current Student World.
+doSomething()
+Controls the movement of the Smallgon. Checks if within 4 y of the nachenblaster, will fire turnip based on random probability. Also checks the death condition for collision between it and the Nachenblaster.
+
+Snagglegon:
+Snagglegon(double x, double y, StudentWorld* s, int h , int p)
+Sets the position and pointer to the current Student World.
+doSomething()
+Controls the movement of the Snagglegon Checks if within 4 y of the nachenblaster, will have a chance at shooting torpedo. Also checks the death condition for collision between it and the Nachenblaster. Also has the probability for dropping one up life goodie.
+
+Goodie:
+public:
+    Goodie(int ID, double x, double y, StudentWorld* s, int dir = 0, double size = 0.5, int depth=1)
+ Sets goodie position, inherits from Actor.
+    virtual void doSomething() = 0;
+virtual to allow for own goodies’ implementation.
+
+Extra Life Goodie:
+
+ExtraLifeGoodie(double x, double y, StudentWorld* s)
+- Sets position and pointer
+virtual void doSomething();
+-  Adds 1000 to points, moves, if interacts, deletes and then gives player extra life.
+
+
+
+
+
+
+
+Repair Goodie:
+RepairGoodie(double x, double y, StudentWorld* s)
+Pos and pointer
+virtual void doSomething();
+Will move, if interacts with player will add to its health points and gets deleted. Adds to points 100.
+
+Torpedo Goodie:
+ TorpedoGoodie(double x, double y, StudentWorld* s)
+Sets position and pointer
+virtual void doSomething();
+Will move, if interacts with player will add 100 to points, gets deleted, and adds torpedoes to the player.
+
+Cabbage: Constructor, doSoemthing() will have it move across the screen. It will call StudentWorld’s collision to check if it has run into an object. Otherwise it will keep moving and rotating, deleting once it has reached the end of the screen.
+
+Torpedo: Constructor, doSoemthing() will have it move across the screen. It will call StudentWorld’s collision to check if it has run into an object. Otherwise it will keep moving, deleting once it has reached the end of the screen.
+
+NachenBlaster: Constructor to determine position and starting coord/starting health, doSomething will set its alive status, regenerate cabbages, and will take in user input. Will move and/or fire cabbages or torpedoes accordingly.
+
+Star: Constructor for starting position and depth, doSomething will have it move and will set death if it reached the end of the screen.
+
+2. Functionalities Not Done
+Though they may not be to spec, all implementations are done.
+
+3. Assumptions
+Assumptions made in terms of when and where object deletion happened when cabbage or torpedo collision occurred.
+
+4. Testing
+Main testing occurred within game. For each specific instance, cassert and cout helped with checking for errors.
+
